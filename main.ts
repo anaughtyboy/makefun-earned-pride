@@ -31,6 +31,9 @@ function validateLine(line: string): void {
   if (line.includes("\n") || line.includes("\r")) {
     fail("line must be a single line");
   }
+  if (!/[A-Za-z]/.test(line)) {
+    fail("line must contain at least one letter");
+  }
   for (const ch of line) {
     if (isControlCharacter(ch)) {
       fail(`line contains a control character (U+${(ch.codePointAt(0) ?? 0).toString(16).padStart(4, "0")})`);
@@ -58,7 +61,7 @@ function main(): void {
     fail("entry.txt ends with a newline byte");
   }
 
-  console.log(`wrote ${target} (${bytes.length} bytes, no trailing newline)`);
+  console.log(`wrote ${target} (${bytes.length} bytes, ${[...ENTRY_LINE].length} characters, no trailing newline)`);
 }
 
 main();
